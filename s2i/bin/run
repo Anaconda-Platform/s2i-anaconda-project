@@ -7,4 +7,6 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 
-exec anaconda-project run ${CMD:-default} --anaconda-project-port 8086 --anaconda-project-address 0.0.0.0 --anaconda-project-no-browser --anaconda-project-use-xheaders
+project_command=${CMD:-default}
+
+exec anaconda-project run ${project_command} --anaconda-project-port 8086 --anaconda-project-address 0.0.0.0 --anaconda-project-no-browser --anaconda-project-use-xheaders

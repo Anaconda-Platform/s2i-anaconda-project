@@ -7,6 +7,11 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 
+function find_js {
+  find ./envs/*/lib/python*/site-packages/bokeh/server/static -follow -type f -name '*.js' ! -name '*.min.js' 2>/dev/null 1>/dev/null
+  return $?
+}
+
 project_command=${CMD:-default}
 
 # If the assemble script is executed with the '-h' flag, print the usage.
@@ -36,3 +41,9 @@ echo "---> Preparing environment for command ${project_command}..."
 anaconda-project clean
 anaconda-project --verbose prepare --command ${project_command}
 conda clean --all --yes
+find ./envs/* -follow -type f -name '*.a' -delete
+find ./envs/* -follow -type f -name '*.pyc' -delete
+find ./envs/* -follow -type f -name '*.js.map' -delete
+if find_js; then
+  find ./envs/*/lib/python*/site-packages/bokeh/server/static -follow -type f -name '*.js' ! -name '*.min.js' -delete
+fi
